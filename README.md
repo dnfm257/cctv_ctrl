@@ -12,7 +12,7 @@
 <img src=./usecase.PNG>
 
 * 클래스 다이어그램
-<img src=./class diagram.PNG>
+<img src=./class_diagram.PNG>
 
 * 시퀀스 다이어그램
 ```mermaid
