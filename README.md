@@ -49,8 +49,8 @@ end
 ```
 ## 111702.py환경설정  
 ---python3.8 사용---
-```html
-yolov8s.pt
+```py
+#yolov8s.pt설치방법
 https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8s.pt
 ```
 ```py
