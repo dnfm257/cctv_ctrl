@@ -9,10 +9,10 @@
 거리에 있는 CCTV를 이용하여 트래픽에 따른 신호등 제어 및 각종 사건사고 감지
 
 * 유스케이스
-<img src=./usecase.PNG>
+<img src=./doc/usecase.PNG>
 
 * 클래스 다이어그램
-<img src=./class_diagram.PNG>
+<img src=./doc/class_diagram.PNG>
 
 * 시퀀스 다이어그램
 ```mermaid
