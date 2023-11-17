@@ -47,6 +47,14 @@ end
 교통관제->>경찰: call_signal()
 경찰-->>교통관제: recv_msg()
 ```
+## 111702.py환경설정  
+---python3.8 사용---
+```py
+pip install opencv-python
+pip install supervision
+pip install YOLO
+pip install numpy
+```
 
 * Members
   | Name | Role |
