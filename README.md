@@ -57,4 +57,4 @@ end
   | 서규승 | AI modeling, AI model 선택, data 수집 및 training 수행 |
   | 조성우 | Architect, 프로젝트 component 구성 및 상위 디자인 설계 |
 * Project Github : https://github.com/dnfm257/cctv_ctrl.git
-* 발표자료 : -
+* 발표자료 : https://github.com/dnfm257/cctv_ctrl/blob/main/doc/cctv_ctrl_ppt.pptx
