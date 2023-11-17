@@ -55,7 +55,7 @@ pip install supervision
 pip install YOLO
 pip install numpy
 ```
-
+## 팀
 * Members
   | Name | Role |
   |----|----|
