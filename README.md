@@ -49,6 +49,9 @@ end
 ```
 ## 111702.py환경설정  
 ---python3.8 사용---
+```html
+yolov8s.pt
+```
 ```py
 pip install opencv-python
 pip install supervision
