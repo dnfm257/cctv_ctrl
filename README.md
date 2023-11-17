@@ -51,10 +51,10 @@ end
 * Members
   | Name | Role |
   |----|----|
-  | 장석환 | Project lead, 프로젝트 총괄 및 책임 |
-  | 김승현 | Project manager, github repository 생성 및 프로젝트 이슈 진행상황 관리 |
-  | 김형은 | UI design, 사용자 인터페이스 정의 및 구현 |
-  | 서규승 | AI modeling, AI model 선택, data 수집 및 training 수행 |
-  | 조성우 | Architect, 프로젝트 component 구성 및 상위 디자인 설계 |
+  | 장석환 | AI_modeling, 사고분석 ai 학습 및 개발1 |
+  | 김승현 | AI_modeling, 사고분석 ai 학습 및 개발2 |
+  | 김형은 | 문서 제작 및 ppt제작,발표|
+  | 서규승 | AI_modeling, 교통통제 및 project maneger|
+  | 조성우 | edge_device_control, 신호등 및 raspberry cam제어 |
 * Project Github : https://github.com/dnfm257/cctv_ctrl.git
 * 발표자료 : https://github.com/dnfm257/cctv_ctrl/blob/main/doc/cctv_ctrl_ppt.pptx
