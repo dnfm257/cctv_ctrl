@@ -101,3 +101,4 @@ cap.release()
 # Destroy all OpenCV windows
 cv2.destroyAllWindows()
 #https://www.mikrocontroller.net/articles/ARM-ASM-Tutorial
+#https://community.st.com/t5/stm32cubeide-mcus/how-to-run-assembly-code-in-stm32-cube-ide-nucleo-f446re/td-p/139119
