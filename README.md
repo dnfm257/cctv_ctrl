@@ -48,7 +48,7 @@ end
 경찰-->>교통관제: recv_msg()
 ```
 ## 111702.py환경설정  
----python3.8 사용---
+--- python3.8 사용 ---
 ```py
 #yolov8s.pt설치방법
 https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8s.pt
@@ -60,7 +60,7 @@ pip install YOLO
 pip install numpy
 ```
 ### 112202.asm환경설정
----pb9,pb13,pb15사용---
+--- pb9,pb13,pb15사용 ---
 ```c
 sudo apt-get install gdb-multiarch
 sudo apt-get install openocd
