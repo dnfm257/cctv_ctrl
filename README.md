@@ -59,6 +59,21 @@ pip install supervision
 pip install YOLO
 pip install numpy
 ```
+### 112202.asm환경설정
+```c
+sudo apt-get install gdb-multiarch
+sudo apt-get install openocd
+sudo apt-get install gdb
+sudo apt-get install stlink-tools
+```
+### 112202.asm 사용법
+```mermaid
+#컴파일 방법
+arm-none-eabi-as -mcpu=cortex-m4 -c file.asm -o file.o ->> arm-none-eabi-ld file.o -o file.elf -Ttext=0x08000000 
+```
+```mermaid
+assembly coding ->> "openocd -f interface/stlink.cfg -f target/stm32f4x.cfg" ->> 새로운 터미널 열고 gdb(gdb-multiarch) ->> load 파일위치/file.elf 또는 file 파일위치/file.elf ->> continue 또는 run ->> 작동
+```
 ## 팀
 * Members
   | Name | Role |
