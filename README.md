@@ -77,6 +77,8 @@ arm-none-eabi-ld file.o -o file.elf -Ttext=0x08000000
 #작동방법
 assembly coding
 openocd -f interface/stlink.cfg -f target/stm32f4x.cfg
+#gdb port 변경
+openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "gdb_port port_number"
 새로운 터미널 열고 gdb(gdb-multiarch)
 load 파일위치/file.elf 또는 file 파일위치/file.elf
 continue 또는 run
