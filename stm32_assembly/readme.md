@@ -6,7 +6,7 @@ linux환경에서는 upgrade나 ubuntu version에 따라 일시적으로 stm32 i
 ## 데이터에 관련된 내용
 datasheet폴더 
 연산기호에 대한 내용(QRC0006_UAL16.pdf) = https://github.com/sysplay/bbb/blob/master/Docs/QRC0006_UAL16.pdf  
-https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwit0IHP6-CCAxUsslYBHflPAgsQFnoECA0QAQ&url=https%3A%2F%2Fwww.st.com%2Fresource%2Fen%2Freference_manual%2Fdm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf&usg=AOvVaw2x8tbTRz8d9PfqXBk3qZ74&opi=89978449
+stm32 f429zi에 대한 datasheet(dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf) = https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwit0IHP6-CCAxUsslYBHflPAgsQFnoECA0QAQ&url=https%3A%2F%2Fwww.st.com%2Fresource%2Fen%2Freference_manual%2Fdm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf&usg=AOvVaw2x8tbTRz8d9PfqXBk3qZ74&opi=89978449  
 MB1137.pdf  => f429zi의 pin에 대한 설정 파일(st.com)  
 
 ## 내장 LED제어(111d.asm)
