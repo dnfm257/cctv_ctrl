@@ -67,6 +67,10 @@ sudo apt-get install openocd
 sudo apt-get install gdb
 sudo apt-get install stlink-tools
 ```
+## stm32는 ide를 사용한 방법
+aa.7z은 stm32 ide 전체파일 , import socket.py는 통신 기본 코드
+
+## stm32 assembly를 통한 제어
 ### 112202.asm 사용법
 ```asm
 #컴파일 방법
@@ -87,8 +91,7 @@ continue 또는 run
 #컴파일 방법
 arm-none-eabi -as -mcpu=cortex-m4 YourFileName.asm -o YourFileName.o && arm-none-eabi -ld YourFileName.o -o YourFileName.elf -Ttext=0x8000000 && openocd -f /YourPath/stlink.cfg -f /YourPath/stm32f4x.cfg -c "init; program start.elf; reset; exit;"
 ```
-## stm32는 ide를 사용한 방법
-aa.7z은 stm32 ide 전체파일 , import socket.py는 통신 기본 코드
+
 
 ## 팀
 * Members
