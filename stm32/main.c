@@ -432,7 +432,7 @@ void StartTask02(void const * argument)
   for(;;)
   {
 	 app();
-	 osDelay(10);
+	 osDelay(1);
   }
   /* USER CODE END StartTask02 */
 }
@@ -451,7 +451,7 @@ void StartTask03(void const * argument)
   for(;;)
   {
 	  control();
-	  osDelay(1);
+	  osDelay(10);
   }
   /* USER CODE END StartTask03 */
 }
