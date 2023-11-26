@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import openvino as ov
 import sys
+import socket
 
 import supervision as sv
 from ultralytics import YOLO
@@ -19,7 +20,7 @@ if len(sys.argv) < 2 or len(sys.argv) > 3:
     print("At least 1 argv needed : [device(CPU or GPU)] [video_path(default webcam 0)]")
     sys.exit(0)
 
-video_path = 1
+video_path = 0
 
 if len(sys.argv) == 3:
     video_path = sys.argv[2]
@@ -44,8 +45,8 @@ class BoxAnnotator(sv.BoxAnnotator):
 
 # Load the OpenVINO model
 def load_model():
-    model_xml_path = "model_yolox_v3/openvino/openvino.xml"
-    model_bin_path = "model_yolox_v3/openvino/openvino.bin"
+    model_xml_path = "detect_accident/model_yolox_v3/openvino/openvino.xml"
+    model_bin_path = "detect_accident/model_yolox_v3/openvino/openvino.bin"
     
     core = ov.Core()
     model = core.read_model(model=model_xml_path, weights=model_bin_path)
@@ -112,9 +113,10 @@ def creat_boxes(frame, x_min, y_min, x_max, y_max, text, color, rect=True):
         
     cv2.putText(frame, text, (x_min, y_min - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
+# 차량 인식영역 정의
 def define_polygons(ratio_x, ratio_y):
     # road1 polygon1
-    polygon1_road1 = np.array([
+    polygons_road1 = np.array([
         [int(725 / ratio_x), int(210 / ratio_y)],
         [int(852 / ratio_x), int(210 / ratio_y)],
         [int(676 / ratio_x), int(943 / ratio_y)],
@@ -122,17 +124,8 @@ def define_polygons(ratio_x, ratio_y):
         [int(721 / ratio_x), int(213 / ratio_y)]
     ], dtype=np.int32)
 
-    # road1 polygon2 
-    polygon2_road1 = np.array([
-        [int(898 / ratio_x), int(193 / ratio_y)],
-        [int(1007 / ratio_x), int(191 / ratio_y)],
-        [int(1774 / ratio_x), int(696 / ratio_y)],
-        [int(1072 / ratio_x), int(918 / ratio_y)],
-        [int(900 / ratio_x), int(202 / ratio_y)]
-    ], dtype=np.int32)
-
     # ROAD2의 polygon1 수정
-    polygon2_road2 = np.array([
+    polygons_road2 = np.array([
         [int(742 / ratio_x), int(416 / ratio_y)],
         [int(1052 / ratio_x), int(412 / ratio_y)],
         [int(1352 / ratio_x), int(930 / ratio_y)],
@@ -140,17 +133,8 @@ def define_polygons(ratio_x, ratio_y):
         [int(740 / ratio_x), int(418 / ratio_y)]
     ], dtype=np.int32)
 
-    # ROAD2의 polygon2 수정
-    polygon1_road2 = np.array([
-        [int(547 / ratio_x), int(411 / ratio_y)],
-        [int(715 / ratio_x), int(419 / ratio_y)],
-        [int(329 / ratio_x), int(936 / ratio_y)],
-        [int(12 / ratio_x), int(800 / ratio_y)],
-        [int(546 / ratio_x), int(410 / ratio_y)]
-    ], dtype=np.int32)
-
     # ROAD3의 polygon1 수정
-    polygon2_road3 = np.array([
+    polygons_road3 = np.array([
         [int(841 / ratio_x), int(338 / ratio_y)],
         [int(1168 / ratio_x), int(335 / ratio_y)],
         [int(1759 / ratio_x), int(892 / ratio_y)],
@@ -158,26 +142,8 @@ def define_polygons(ratio_x, ratio_y):
         [int(842 / ratio_x), int(347 / ratio_y)]
     ], dtype=np.int32)
 
-    # ROAD3의 polygon2 수정
-    polygon1_road3 = np.array([
-        [int(486 / ratio_x), int(319 / ratio_y)],
-        [int(814 / ratio_x), int(324 / ratio_y)],
-        [int(694 / ratio_x), int(912 / ratio_y)],
-        [int(14 / ratio_x), int(817 / ratio_y)],
-        [int(488 / ratio_x), int(316 / ratio_y)]
-    ], dtype=np.int32)
-
-    # road4의 새로운 polygon1 수정
-    polygon1_road4 = np.array([
-        [int(742 / ratio_x), int(201 / ratio_y)],
-        [int(860 / ratio_x), int(199 / ratio_y)],
-        [int(727 / ratio_x), int(786 / ratio_y)],
-        [int(15 / ratio_x), int(678 / ratio_y)],
-        [int(741 / ratio_x), int(202 / ratio_y)]
-    ], dtype=np.int32)
-
     # road4의 새로운 polygon2 수정
-    polygon2_road4 = np.array([
+    polygons_road4 = np.array([
         [int(895 / ratio_x), int(190 / ratio_y)],
         [int(983 / ratio_x), int(178 / ratio_y)],
         [int(1678 / ratio_x), int(607 / ratio_y)],
@@ -185,16 +151,11 @@ def define_polygons(ratio_x, ratio_y):
         [int(897 / ratio_x), int(187 / ratio_y)]
     ], dtype=np.int32)
     
-    # Define multiple sets of polygons for different roads
-    polygons_road1 = [polygon1_road1, polygon2_road1]
-    polygons_road2 = [polygon1_road2, polygon2_road2]
-    polygons_road3 = [polygon1_road3, polygon2_road3]
-    polygons_road4 = [polygon1_road4, polygon2_road4]
-    
-    polygon_options = [polygons_road1, polygons_road2, polygons_road3, polygons_road4]
+    polygon_options = [[polygons_road1], [polygons_road2], [polygons_road3], [polygons_road4]]
 
     return polygon_options
 
+# 인식영역, 인식박스 init
 def init_annotators(current_polygons, colors):
     global frame_size
     # Convert current polygons to PolygonZone objects
@@ -240,6 +201,7 @@ def draw_polygon_without_count(scene, polygon, zone_annotator, thickness):
     cv2.polylines(scene, [polygon], isClosed=True, color=zone_annotator.color, thickness=thickness)
     return scene
 
+# 옵션 조정
 def set_options(frame, polygon_options, colors, polygons):
     global key
     
@@ -294,7 +256,7 @@ def set_options(frame, polygon_options, colors, polygons):
             for index, zone in enumerate(current_zones)
         ]
         box_annotators = [
-            sv.BoxAnnotator(
+            BoxAnnotator(
                 color=ensure_color_format(colors.by_idx(index % 8)),
                 thickness=4,
                 text_thickness=4,
@@ -307,6 +269,31 @@ def set_options(frame, polygon_options, colors, polygons):
         return (current_polygons, show_boxes, show_polygons, current_zones, zone_annotators, box_annotators)
     
     return (current_polygons, show_boxes, show_polygons)
+
+def create_socket():
+    global server_socket
+    
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server_socket.bind(('10.10.141.24', 5001))
+    server_socket.listen(5)
+
+def connect_client(server_socket):
+    global client_socket
+    
+    client_socket, addr = server_socket.accept()
+
+# 차량 통행량 발신
+def send_msg(client_socket, msg):
+    global server_socket
+    
+    # 보내기 전 연결이 끊겼을 시 재연결
+    if client_socket is None:
+        connect_client(server_socket)
+
+    data = (f"{msg}\r\n")
+    #print(data)
+    client_socket.send(data.encode('utf-8'))
 
 # 사고 detect
 def detect_accident(input_queue, output_queue):    
@@ -367,9 +354,9 @@ def detect_accident(input_queue, output_queue):
             
         e.set()
         
-# process_frame 함수 정의
-def process_frame(input_queue, output_queue):
-    global frame_size
+# 차량 트래픽 감지
+def detect_traffic(input_queue, output_queue):
+    global frame_size, client_socket
     
      # Load YOLO model
     model = YOLO('yolov8s.pt')
@@ -389,6 +376,7 @@ def process_frame(input_queue, output_queue):
     
     # 인식객체수 표시 여부를 결정하는 플래그 추가
     show_count=False
+    object_count = 0
 
     # Car class ID for filtering (assuming 'car' class ID is 2)
     car_class_id = 2
@@ -448,9 +436,10 @@ def process_frame(input_queue, output_queue):
             output_queue.put(("Webcam traffic Detection", frame))
             
         e.clear()
+        #send_msg(client_socket, object_count)
 
 def main():
-    global key
+    global key, server_socket, client_socket
     fps = 30 # 영상 FPS 조절
     
     input_queue = Queue(maxsize=6) # 영상 input queue
@@ -460,13 +449,15 @@ def main():
         target=detect_accident, 
         args=(input_queue, output_queue))
     traffic_thread = threading.Thread(
-        target=process_frame,
+        target=detect_traffic,
         args=(input_queue, output_queue)
     )
     
     detection_thread.start()
     traffic_thread.start()
-
+    
+    #create_socket()
+    #connect_client(server_socket)
     cap = init_camera()
 
     while True:
@@ -495,6 +486,10 @@ def main():
         output_queue.task_done()
         
     input_queue.put(None)
+    
+    #server_socket.close()
+    #client_socket.close()
+    
     detection_thread.join()
     traffic_thread.join()
     
