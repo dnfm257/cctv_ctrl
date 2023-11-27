@@ -31,7 +31,7 @@ void control(void)
 	{
 		osDelay(3000);
 	}
-	else if(10<x)
+	else
 	{
 		osDelay(4000);
 	}
@@ -45,7 +45,7 @@ void control(void)
 	{
 		osDelay(3000);
 	}
-	else if(10<x)
+	else
 	{
 		osDelay(2000);
 	}

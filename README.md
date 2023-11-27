@@ -50,10 +50,13 @@ pip install numpy
 ## 112202.asm환경설정
 --- pb9,pb13,pb15사용 ---
 ```c
-sudo apt-get install gdb-multiarch
-sudo apt-get install openocd
 sudo apt-get install gdb
+sudo apt-get install gdb-multiarch
+(GNU gdb (Ubuntu 12.1-0ubuntu1~22.04) 12.1)
+sudo apt-get install openocd
+(Open On-Chip Debugger 0.11.0, Licensed under GNU GPL v2)
 sudo apt-get install stlink-tools
+(stlink-server v2.1.1)
 ```
 ## stm32는 ide를 사용한 방법
 aa.7z은 stm32 ide 전체파일 , import socket.py는 통신 기본 코드
@@ -75,6 +78,7 @@ openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "gdb_port port_number"
 load 파일위치/file.elf 또는 file 파일위치/file.elf
 continue 또는 run
 ```
+![스크린샷 2023-11-27 14-18-17](https://github.com/dnfm257/cctv_ctrl/assets/143377935/090bf48d-04f3-40ce-9076-e364a6f46a72)
 ```통합 명령
 #컴파일 방법
 arm-none-eabi -as -mcpu=cortex-m4 YourFileName.asm -o YourFileName.o && arm-none-eabi -ld YourFileName.o -o YourFileName.elf -Ttext=0x8000000 && openocd -f /YourPath/stlink.cfg -f /YourPath/stm32f4x.cfg -c "init; program start.elf; reset; exit;"

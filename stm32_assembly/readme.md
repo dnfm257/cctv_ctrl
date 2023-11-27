@@ -32,7 +32,10 @@ pb라인의 9,12,13,15를 이용한 delay led점등
 ## tim을 이용한 switching 점등(112401.asm)
 직점 triger를 설정해서 flag 횟수에 따라 점등이 변경되는 코드(아직 수정중)
 
+## 환경설정 및 정보에 대한 사진들(qqqww.elf는 stm32로 만든 동일한 동작을 하는 프로그램)
 ![스크린샷 2023-11-25 13-25-32](https://github.com/dnfm257/cctv_ctrl/assets/143377935/1b274bd7-9089-4066-b5cf-fcbb308c9064)
 ![스크린샷 2023-11-25 13-19-20](https://github.com/dnfm257/cctv_ctrl/assets/143377935/4d05dcfd-86b7-445d-a6c0-cd8176951d9e)
 ![스크린샷 2023-11-25 13-14-11](https://github.com/dnfm257/cctv_ctrl/assets/143377935/e2d24b90-9973-406b-9fa2-1e8dee553937)
 ![스크린샷 2023-11-25 13-50-29](https://github.com/dnfm257/cctv_ctrl/assets/143377935/12b9460f-6ba4-45ca-b2b2-ef0fb7cc456a)
+![스크린샷 2023-11-27 14-18-17](https://github.com/dnfm257/cctv_ctrl/assets/143377935/090bf48d-04f3-40ce-9076-e364a6f46a72)
+
