@@ -62,10 +62,13 @@ pip install numpy
 ## 112202.asm환경설정
 --- pb9,pb13,pb15사용 ---
 ```c
-sudo apt-get install gdb-multiarch
-sudo apt-get install openocd
 sudo apt-get install gdb
+sudo apt-get install gdb-multiarch
+(GNU gdb (Ubuntu 12.1-0ubuntu1~22.04) 12.1)
+sudo apt-get install openocd
+(Open On-Chip Debugger 0.11.0, Licensed under GNU GPL v2)
 sudo apt-get install stlink-tools
+(stlink-server v2.1.1)
 ```
 ## stm32는 ide를 사용한 방법
 aa.7z은 stm32 ide 전체파일 , import socket.py는 통신 기본 코드
