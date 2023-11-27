@@ -87,6 +87,7 @@ openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c "gdb_port port_number"
 load 파일위치/file.elf 또는 file 파일위치/file.elf
 continue 또는 run
 ```
+![스크린샷 2023-11-27 14-18-17](https://github.com/dnfm257/cctv_ctrl/assets/143377935/090bf48d-04f3-40ce-9076-e364a6f46a72)
 ```통합 명령
 #컴파일 방법
 arm-none-eabi -as -mcpu=cortex-m4 YourFileName.asm -o YourFileName.o && arm-none-eabi -ld YourFileName.o -o YourFileName.elf -Ttext=0x8000000 && openocd -f /YourPath/stlink.cfg -f /YourPath/stm32f4x.cfg -c "init; program start.elf; reset; exit;"
