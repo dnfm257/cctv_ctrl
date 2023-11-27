@@ -4,6 +4,7 @@ import openvino as ov
 import sys
 import socket
 
+from twilio.rest import Client
 import supervision as sv
 from ultralytics import YOLO
 
@@ -45,8 +46,8 @@ class BoxAnnotator(sv.BoxAnnotator):
 
 # Load the OpenVINO model
 def load_model():
-    model_xml_path = "detect_accident/model_yolox_v3/openvino/openvino.xml"
-    model_bin_path = "detect_accident/model_yolox_v3/openvino/openvino.bin"
+    model_xml_path = "model_yolox_v3/openvino/openvino.xml"
+    model_bin_path = "model_yolox_v3/openvino/openvino.bin"
     
     core = ov.Core()
     model = core.read_model(model=model_xml_path, weights=model_bin_path)
@@ -95,11 +96,12 @@ def get_shape(compiled_model):
 # Preprocess the frame to match the input requirements of the model
 def preprocess(frame, W, H):
     resized_frame = cv2.resize(frame, (W, H))
+    # 높이, 너비, 색상 -> 색상, 높이, 너비 변경 후 맨 앞에 1추가 => 모델 input shape와 동일하게 만들어줌
     input_frame = np.expand_dims(resized_frame.transpose(2, 0, 1), axis=0)
 
     return resized_frame, input_frame
 
-# 사이즈 비율에 맞게 재조정
+# 원본 frame 대비 resize된 frame 비율 측정
 def adjust_ratio(frame, resized_frame):
     (real_y, real_x), (resized_y, resized_x) = frame.shape[:2], resized_frame.shape[:2]
     ratio_x, ratio_y = (real_x / resized_x), (real_y / resized_y)
@@ -291,6 +293,24 @@ def send_msg(client_socket, msg):
     #print(data)
     client_socket.send(data.encode('utf-8'))
 
+# 모바일 전송 코드
+def send_sms(flags):
+    if flags == 1:
+        data = "**사거리 사고발생 경찰력 총동원"
+    elif flags == 2:
+        data = "**사거리 사고발생 구급차 출동요망"
+    else:
+        return
+    
+    account_sid = 'AC830601052a526b757f23cac741e8becb'
+    auth_token = ''
+    client = Client(account_sid, auth_token)
+    message = client.messages.create(
+        from_='+12563685788',
+        body=data.encode(),
+        to='+821031198106'
+    )
+
 # 사고 detect
 def detect_accident(input_queue, output_queue):    
     # 레이블 정의
@@ -306,7 +326,9 @@ def detect_accident(input_queue, output_queue):
     output_layer_boxes = compiled_model.output("boxes")
     
     H, W = get_shape(compiled_model)
-
+    
+    flag = True
+    
     while True:
         with input_lock:
             # cam frame input
@@ -315,7 +337,9 @@ def detect_accident(input_queue, output_queue):
         # 종료
         if frame is None:
             break
-    
+        
+        e.set()
+        
         resized_frame, input_frame = preprocess(frame, W, H)
     
         # 화면비율을 통한 좌표수정
@@ -340,15 +364,21 @@ def detect_accident(input_queue, output_queue):
             # 인식한 객체에 대한 레이블 정보 가져오기
             label_name = labels[class_id]["name"]
             color = labels[class_id]["color"]
-
+            
+            if flag:
+                if label_name == "moderate" or label_name == "severe":
+                    send_sms(1)
+                elif label_name == "fall":
+                    send_sms(2)
+                
+                flag = False
+            
             st = f"{label_name}  {score:.2f}"
             print(st)
             creat_boxes(frame, x_min, y_min, x_max, y_max, st, color)
         
         with output_lock:
             output_queue.put(('Webcam Object Detection', frame))
-            
-        e.set()
         
 # 차량 트래픽 감지
 def detect_traffic(input_queue, output_queue):
@@ -383,6 +413,8 @@ def detect_traffic(input_queue, output_queue):
         
         with input_lock:
             frame = input_queue.get()
+            
+        e.clear()
         
         # 폴리곤(roi)여부, 폴리곤(roi)모양, 인식박스 여부,
         options = set_options(frame, polygon_options, colors, current_polygons)
