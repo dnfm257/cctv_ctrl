@@ -1,1 +1,107 @@
+#include <SPI.h>
+#include <Ethernet.h>
+#include <ESP8266WiFi.h>
 
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED }; // Ethernet Shield의 MAC 주소
+IPAddress ip(10, 10, 141, 5); // Ethernet Shield의 IP 주소
+
+const char* ssid = "KCCI_STC_S"; // Wi-Fi 네트워크 이름
+const char* password = "kcci098#"; // Wi-Fi 비밀번호
+WiFiServer server(80); // Wi-Fi 소켓 서버
+
+bool socketInput = false; // 소켓 입력 여부 확인을 위한 변수
+const int greenLeds[] = {4, 5};    // 초록색 LED 핀 배열
+const int yellowLeds[] = {6, 7};   // 노란색 LED 핀 배열
+const int redLeds[] = {8, 9};      // 빨간색 LED 핀 배열
+
+void lightUpLeds(const int leds[], int numLeds, int duration) {
+  for (int i = 0; i < numLeds; i++) {
+    digitalWrite(leds[i], HIGH);  // LED 켜기
+  }
+  delay(duration); // 지정된 시간동안 대기
+  for (int i = 0; i < numLeds; i++) {
+    digitalWrite(leds[i], LOW);  // LED 끄기
+  }
+}
+
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  // Wi-Fi 연결 시작
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
+  server.begin(); // Wi-Fi 소켓 서버 시작
+  pinMode(greenLeds[0], OUTPUT);
+  pinMode(greenLeds[1], OUTPUT);
+  pinMode(yellowLeds[0], OUTPUT);
+  pinMode(yellowLeds[1], OUTPUT);
+  pinMode(redLeds[0], OUTPUT);
+  pinMode(redLeds[1], OUTPUT);
+
+
+void loop() {
+  int currentValue = 5; // 초기 값
+
+  // 클라이언트로부터 값을 받음
+  EthernetClient client = server.available();
+  if (client) {
+    while (client.connected()) {
+      if (client.available()) {
+        currentValue = client.parseInt(); // 클라이언트로부터 값을 읽어서 currentValue에 할당
+        socketInput = true; // 소켓 입력이 있음을 표시
+        break;
+      }
+    }
+    client.stop();
+  }
+
+  // 클라이언트로부터 값을 받지 않았거나 socketInput이 false일 때
+  if (!socketInput) {
+    // 원하는 값을 직접 입력하여 LED 제어
+    currentValue = 5; // 여기에 원하는 값을 설정하세요 (1, 5, 10 등)
+  }
+
+  // LED 제어 알고리즘 실행
+  if (currentValue >= 0 && currentValue <= 4) {
+    lightUpLeds(greenLeds, sizeof(greenLeds) / sizeof(greenLeds[0]), 2000); // 초록불
+    delay(500); // 대기
+    lightUpLeds(yellowLeds, sizeof(yellowLeds) / sizeof(yellowLeds[0]), 3000); // 노란불
+    delay(500); // 대기
+    lightUpLeds(redLeds, sizeof(redLeds) / sizeof(redLeds[0]), 5000); // 빨간불
+    delay(500); // 대기
+  } else if (currentValue >= 5 && currentValue <= 9) {
+    lightUpLeds(greenLeds, sizeof(greenLeds) / sizeof(greenLeds[0]), 3000); // 초록불
+    delay(500); // 대기
+    lightUpLeds(yellowLeds, sizeof(yellowLeds) / sizeof(yellowLeds[0]), 3000); // 노란불
+    delay(500); // 대기
+    lightUpLeds(redLeds, sizeof(redLeds) / sizeof(redLeds[0]), 3000); // 빨간불
+    delay(500); // 대기
+  } else if (currentValue >= 10) {
+    while (true) {
+      lightUpLeds(greenLeds, sizeof(greenLeds) / sizeof(greenLeds[0]), 5000); // 초록불
+      delay(500); // 대기
+      lightUpLeds(yellowLeds, sizeof(yellowLeds) / sizeof(yellowLeds[0]), 3000); // 노란불
+      delay(500); // 대기
+      lightUpLeds(redLeds, sizeof(redLeds) / sizeof(redLeds[0]), 2000); // 빨간불
+      delay(500); // 대기
+    }
+  }
+
+  // 추가 작업 또는 대기할 경우 여기에 코드 추가 가능
+}
