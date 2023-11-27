@@ -11,8 +11,6 @@
 * 유스케이스
 <img src=./doc/usecase.png>
 
-* 클래스 다이어그램
-<img src=./doc/class_diagram.PNG>
 
 * 시퀀스 다이어그램
 ```mermaid
