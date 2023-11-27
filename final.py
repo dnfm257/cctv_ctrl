@@ -51,7 +51,7 @@ def load_model():
     core = ov.Core()
     model = core.read_model(model=model_xml_path, weights=model_bin_path)
     
-    # static shape convert(GPU가속 동적모델 지원X)
+    # static shape convert
     if select_device == 'GPU':
         model.reshape([1, 3, 416, 416]) 
         
@@ -286,10 +286,6 @@ def connect_client(server_socket):
 # 차량 통행량 발신
 def send_msg(client_socket, msg):
     global server_socket
-    
-    # 보내기 전 연결이 끊겼을 시 재연결
-    if client_socket is None:
-        connect_client(server_socket)
 
     data = (f"{msg}\r\n")
     #print(data)
@@ -436,7 +432,7 @@ def detect_traffic(input_queue, output_queue):
             output_queue.put(("Webcam traffic Detection", frame))
             
         e.clear()
-        #send_msg(client_socket, object_count)
+        send_msg(client_socket, object_count)
 
 def main():
     global key, server_socket, client_socket
@@ -456,8 +452,8 @@ def main():
     detection_thread.start()
     traffic_thread.start()
     
-    #create_socket()
-    #connect_client(server_socket)
+    create_socket()
+    connect_client(server_socket)
     cap = init_camera()
 
     while True:
@@ -487,8 +483,8 @@ def main():
         
     input_queue.put(None)
     
-    #server_socket.close()
-    #client_socket.close()
+    server_socket.close()
+    client_socket.close()
     
     detection_thread.join()
     traffic_thread.join()

@@ -18,35 +18,23 @@
 ```mermaid
 sequenceDiagram
 
-CCTV->>교통관제: send_img()
-Note right of 교통관제: 1 Cycle
-교통관제->>교통관제: traffic_detect()
+교통관제->>신호등: connect_client
 
-교통관제->>신호등: light_control()
-신호등-->>교통관제: recv_cycle()
+loop traffic check
+    교통관제->>교통관제: detect_traffic()
+    교통관제->>신호등: send_msg()
+end
 ```
 
 ```mermaid
 sequenceDiagram
 loop accident check
-    CCTV->>교통관제: send_img()
     교통관제->>교통관제: accident_detect()
+    교통관제->>경찰: send_msg()
+    교통관제->>병원: send_msg()
 end
-교통관제->>경찰: emergency_signal()
-경찰-->>교통관제: recv_msg()
-교통관제->>병원: emergency_signal()
-병원-->>교통관제: recv_msg()
 ```
 
-```mermaid
-sequenceDiagram
-loop violation check
-    CCTV->>교통관제: send_img()
-    교통관제->>교통관제: violation_detect()
-end
-교통관제->>경찰: call_signal()
-경찰-->>교통관제: recv_msg()
-```
 ## 111702.py환경설정  
 --- python3.8 사용 ---
 ```py
@@ -92,15 +80,28 @@ continue 또는 run
 arm-none-eabi -as -mcpu=cortex-m4 YourFileName.asm -o YourFileName.o && arm-none-eabi -ld YourFileName.o -o YourFileName.elf -Ttext=0x8000000 && openocd -f /YourPath/stlink.cfg -f /YourPath/stm32f4x.cfg -c "init; program start.elf; reset; exit;"
 ```
 
+## final.py 실행
+```python
+pip install opencv-python
+pip install "openvino>=2023.2.0"
+pip install supervision
+pip install ultralytics
+```
+
+```cmd
+python ./final.py [CPU or GPU] [video_path] # default webcam 0
+```
+
+
 
 ## 팀
 * Members
   | Name | Role |
   |----|----|
-  | 장석환 | AI_modeling, 사고분석 ai 학습 및 개발1 |
-  | 김승현 | AI_modeling, 사고분석 ai 학습 및 개발2 |
-  | 김형은 | 문서 제작 및 ppt제작,발표|
-  | 서규승 | AI_modeling, 교통통제 및 project maneger|
+  | 장석환 | edge_device_control, 신호등 STM32 제어 |
+  | 김승현 | AI_modeling, 트래픽감지 ai 개발 및 학습 |
+  | 김형은 | 문서 제작 및 ppt제작,발표 |
+  | 서규승 | AI_modeling, 사고감지 ai 학습 및 project maneger |
   | 조성우 | edge_device_control, 신호등 및 raspberry cam제어 |
 * Project Github : https://github.com/dnfm257/cctv_ctrl.git
 * 발표자료 : https://github.com/dnfm257/cctv_ctrl/blob/main/doc/cctv_ctrl_ppt.pptx
