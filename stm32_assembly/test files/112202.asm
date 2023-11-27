@@ -54,11 +54,15 @@ loop:
     mov r1, #(1 << LED_PIN)    
     str r1, [r0]
     bl delay
+    bl delay
+    bl delay
 
     @ LED OFF
     ldr r0, =GPIOB_ODR
     mov r1, #(0 << LED_PIN)    
     str r1, [r0]
+    bl delay
+    bl delay
     bl delay
 
     @ LED_1 ON
@@ -66,11 +70,15 @@ loop:
     mov r1, #(1 << LED_PIN_1)    
     str r1, [r0]
     bl delay
+    bl delay
+    bl delay
 
     @ LED_1 OFF
     ldr r0, =GPIOB_ODR
     mov r1, #(0 << LED_PIN_1)    
     str r1, [r0]
+    bl delay
+    bl delay
     bl delay
 
     @ LED_2 ON
@@ -78,11 +86,15 @@ loop:
     mov r1, #(1 << LED_PIN_2)    
     str r1, [r0]
     bl delay
+    bl delay
+    bl delay
 
     @ LED_2 OFF
     ldr r0, =GPIOB_ODR
     mov r1, #(0 << LED_PIN_2)    
     str r1, [r0]
+    bl delay
+    bl delay
     bl delay
 
     b loop
