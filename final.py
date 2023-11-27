@@ -463,7 +463,6 @@ def detect_traffic(input_queue, output_queue):
         with output_lock:
             output_queue.put(("Webcam traffic Detection", frame))
             
-        e.clear()
         send_msg(client_socket, object_count)
 
 def main():
