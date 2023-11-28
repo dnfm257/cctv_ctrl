@@ -7,10 +7,12 @@ linux환경에서는 upgrade나 ubuntu version에 따라 일시적으로 stm32 i
 ### 2
 경찰청 교통신호제어기 표준규격서 R27(2021.10.05)에 의한 규격을 보면은 신호등의 제어와 관련된 adress 주소등에 대한 상세한 설명이 있음
 이를 참고하여 제작해보고자 진행함
-https://www.koroad.or.kr/main/board/21/22366/board_view.do?&cp=3&listType=list&bdOpenYn=Y&bdNoticeYn=N
 
 
 ## datasheet 
+
+#### 경찰청 교통신호제어기 표준규격서 R27(2021.10.05)
+https://www.koroad.or.kr/main/board/21/22366/board_view.do?&cp=3&listType=list&bdOpenYn=Y&bdNoticeYn=N
 
 #### 연산기호에 대한 내용
 (QRC0006_UAL16.pdf)
