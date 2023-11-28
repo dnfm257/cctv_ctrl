@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "app.h"
 #include "main.h"
 #include "FreeRTOS.h"
@@ -26,10 +27,11 @@ void app_init(void);
 void control(void)
 {
 	printf("gpio\r\n");
+	osDelay(10);
 	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);
 	if(x>10)
 	{
-		osDelay(3000);
+		osDelay(8000);
 	}
 	else
 	{
@@ -41,15 +43,15 @@ void control(void)
 	osDelay(3000);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
-	if(x<=10)
+	if(x>10)
 	{
-		osDelay(3000);
+		osDelay(2000);
 	}
 	else
 	{
 		osDelay(2000);
 	}
-	y=1;
+
 	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
 
 }
@@ -61,25 +63,28 @@ void app(void)
 			app_init();
 			t=1;
 		}
-		lwip_read(sock, message, 2);
-		printf(message);
-		printf("\r\n");
-		x=atoi(message);
-		if (x>5)
-		{
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-			osDelay(6000);
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-			x=15;
-		}
-		else
-		{
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-			osDelay(1000);
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-			x=1;
-		}
-		y=0;
+		memset(message, 0, sizeof(message));
+		lwip_read(sock, message,sizeof(message));
+			x=atoi(message);
+			printf("%d\r\n", x);
+			if(x>90)
+			{
+				HAL_GPIO_WritePin(GPIOF, GPIO_PIN_12, GPIO_PIN_SET);
+				printf("emergency\r\n");
+			}
+			else if (x<5)
+			{
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+				osDelay(1000);
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+			}
+			else
+			{
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+				osDelay(1000);
+				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+			}
+
 
 }
 void app_init(void)
