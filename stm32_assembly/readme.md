@@ -9,11 +9,6 @@ linux환경에서는 upgrade나 ubuntu version에 따라 일시적으로 stm32 i
 이를 참고하여 제작해보고자 진행함
 https://www.koroad.or.kr/main/board/21/22366/board_view.do?&cp=3&listType=list&bdOpenYn=Y&bdNoticeYn=N
 
-![스크린샷 2023-11-28 08-52-24](https://github.com/dnfm257/cctv_ctrl/assets/143377935/96b8cd14-8e46-4de0-97f2-804d3d638e11)
-
-![스크린샷 2023-11-28 09-07-44](https://github.com/dnfm257/cctv_ctrl/assets/143377935/35dd0209-ade2-4fa4-b4f9-c3c446a06562)
-![스크린샷 2023-11-28 08-57-24](https://github.com/dnfm257/cctv_ctrl/assets/143377935/17176784-a3a6-465b-a517-4c1b67c38c78)
-![스크린샷 2023-11-28 08-53-49](https://github.com/dnfm257/cctv_ctrl/assets/143377935/72f05cfb-f8d5-4654-9e80-1bb3e997693f)
 
 ## datasheet 
 
