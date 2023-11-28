@@ -1,19 +1,37 @@
 # STM32 NUCLEO-F429ZI를 assembly로 제어해본 내용
+## 사용이유
+### 1
 linux환경에서는 upgrade나 ubuntu version에 따라 일시적으로 stm32 ide프로그램이 작동하지 않을 수 있음
 그러한 상황이 왔을때를 대비한 ide를 사용하지 않고 코딩하는 방법이 필요
 다양한 방법 중 최소한의 파일이 필요한 assembly어를 선택하고 이를 시도해봄
+### 2
+경찰청 교통신호제어기 표준규격서 R27(2021.10.05)에 의한 규격을 보면은 신호등의 제어와 관련된 adress 주소등에 대한 상세한 설명이 있음
+이를 참고하여 제작해보고자 진행함
+https://www.koroad.or.kr/main/board/21/22366/board_view.do?&cp=3&listType=list&bdOpenYn=Y&bdNoticeYn=N
+
+
+![스크린샷 2023-11-28 08-42-58](https://github.com/dnfm257/cctv_ctrl/assets/143377935/723f9538-0e1b-4ce1-8d8e-b09edfa920f3)
+![스크린샷 2023-11-28 08-42-58](https://github.com/dnfm257/cctv_ctrl/assets/143377935/fb5cccc4-6698-4ca4-b302-ba4e3e3e2bc6)
+![스크린샷 2023-11-28 08-52-24](https://github.com/dnfm257/cctv_ctrl/assets/143377935/96b8cd14-8e46-4de0-97f2-804d3d638e11)
+
+![스크린샷 2023-11-28 09-07-44](https://github.com/dnfm257/cctv_ctrl/assets/143377935/35dd0209-ade2-4fa4-b4f9-c3c446a06562)
+![스크린샷 2023-11-28 08-57-24](https://github.com/dnfm257/cctv_ctrl/assets/143377935/17176784-a3a6-465b-a517-4c1b67c38c78)
+![스크린샷 2023-11-28 08-53-49](https://github.com/dnfm257/cctv_ctrl/assets/143377935/72f05cfb-f8d5-4654-9e80-1bb3e997693f)
 
 ## datasheet 
 
-#### 연산기호에 대한 내용(QRC0006_UAL16.pdf)
+#### 연산기호에 대한 내용
+(QRC0006_UAL16.pdf)
 
 https://github.com/sysplay/bbb/blob/master/Docs/QRC0006_UAL16.pdf  
 
-#### stm32 f429zi에 대한 datasheet(dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf)
+#### stm32 f429zi에 대한 datasheet
+(dm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf)
 
 https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwit0IHP6-CCAxUsslYBHflPAgsQFnoECA0QAQ&url=https%3A%2F%2Fwww.st.com%2Fresource%2Fen%2Freference_manual%2Fdm00031020-stm32f405-415-stm32f407-417-stm32f427-437-and-stm32f429-439-advanced-arm-based-32-bit-mcus-stmicroelectronics.pdf&usg=AOvVaw2x8tbTRz8d9PfqXBk3qZ74&opi=89978449  
 
-#### tim핀 설정을 위한 cortex-m4 datasheet(pm0214-stm32-cortexm4-mcus-and-mpus-programming-manual-stmicroelectronicsㄴ.pdf)
+#### tim핀 설정을 위한 cortex-m4 datasheet
+(pm0214-stm32-cortexm4-mcus-and-mpus-programming-manual-stmicroelectronicsㄴ.pdf)
 
 https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjq0piZ7OCCAxWsr1YBHYBYDbkQFnoECBAQAQ&url=https%3A%2F%2Fwww.st.com%2Fresource%2Fen%2Fprogramming_manual%2Fpm0214-stm32-cortexm4-mcus-and-mpus-programming-manual-stmicroelectronics.pdf&usg=AOvVaw0Wm2Kvb6UMOUO7rWx3Zup9&opi=89978449
 
