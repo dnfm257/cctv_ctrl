@@ -11,6 +11,8 @@
 * 유스케이스
 <img src=./doc/usecase.png>
 
+*흐름도
+![diagram](https://github.com/dnfm257/cctv_ctrl/assets/118237074/2e4c1ce2-9671-4f5e-9acc-e2d6bbbaa88c)
 
 * 시퀀스 다이어그램
 ```mermaid
