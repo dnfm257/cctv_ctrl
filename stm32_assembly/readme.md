@@ -11,7 +11,6 @@ https://www.koroad.or.kr/main/board/21/22366/board_view.do?&cp=3&listType=list&b
 
 
 ![스크린샷 2023-11-28 08-42-58](https://github.com/dnfm257/cctv_ctrl/assets/143377935/723f9538-0e1b-4ce1-8d8e-b09edfa920f3)
-![스크린샷 2023-11-28 08-42-58](https://github.com/dnfm257/cctv_ctrl/assets/143377935/fb5cccc4-6698-4ca4-b302-ba4e3e3e2bc6)
 ![스크린샷 2023-11-28 08-52-24](https://github.com/dnfm257/cctv_ctrl/assets/143377935/96b8cd14-8e46-4de0-97f2-804d3d638e11)
 
 ![스크린샷 2023-11-28 09-07-44](https://github.com/dnfm257/cctv_ctrl/assets/143377935/35dd0209-ade2-4fa4-b4f9-c3c446a06562)
